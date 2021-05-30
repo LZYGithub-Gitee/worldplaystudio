@@ -1,0 +1,173 @@
+import model.system as *; 
+
+/* 变量 */
+var skin    = "HouYi";       /* 皮肤 */
+var hurt    = 12;            /* 伤害 */
+var addhurt = 1;             /* 加成 */
+var coin    = 0;             /* 金币 */
+
+/* 人物技能 */
+/* 后羿 */
+var skill = "1. 多重箭矢\n2. 落日余晖\n3. 灼日之矢"; /* 技能文本 */
+var skillhurt_1 = 1.5; /* 技能加值 */
+var skillhurt_2 = 1.9;
+var skillhurt_3 = 2.4;
+var cooling_1 = 0;     /* 技能冷却 */
+var cooling_2 = 0;
+var cooling_3 = 0;
+
+/* 文字版的《王者》 */
+print("欢迎游玩王者荣耀\n版本: CopyVer-0.1\n=================\n");
+while 1 == 1 {
+	print("选项如下:\n1. 开始游戏\n2. 商店\n3. 退出");
+	var choice = input("请选择: "); /* 选项选择 */
+	print("=================\n");
+	
+	/* 开始游戏 */
+	if choice == "1" {
+		print("欢迎来到王者峡谷！");
+		print("您选择的皮肤是: "+skin+"\n");
+		/* 血量 */
+		var mehealth  = 100; /* 自己血量 */
+		var himhealth = 100; /* 对方血量 */
+		/* 开始 */
+		while mehealth > 0 and himhealth > 0 {
+			print("你的血量: "+str(mehealth)+"\t对手血量: "+str(himhealth));
+			/* 自己攻击 */
+			print("请选择你的攻击技能:\n"+skill+"\n4. 普通攻击");
+			var skillchoice = input("请选择: ");
+			if skillchoice == '4' {
+				var himhealth -= hurt;
+				var cooling_1 -= 1;
+				var cooling_2 -= 1;
+				var cooling_3 -= 1;
+				/* 对手攻击 */
+				var mehealth -= 16;
+			}
+			elif skillchoice == "1" {
+				if cooling_1 == 0 {
+					/* 伤害计算 */
+					var hurt = hurt * skillhurt_1;
+					var himhealth -= hurt;
+					/* 变量值复原 */
+					if skin == "HouYi" {
+						var cooling_1 = 6;
+					}elif skin == "LiBai" {
+						var cooling_1 = 8;
+					}
+					var hurt = 12 * addhurt;
+					/* 对手攻击 */
+					var mehealth -= 16;
+				}else {
+					print("技能冷却中...");
+				}
+			}
+			elif skillchoice == "2" {
+				if cooling_2 == 0 {
+					/* 伤害计算 */
+					var hurt = hurt * skillhurt_2;
+					var himhealth -= hurt;
+					/* 变量值复原 */
+					if skin == "HouYi" {
+						var cooling_2 = 6;
+					}elif skin == "LiBai" {
+						var cooling_2 = 6;
+					}
+					var hurt = 12 * addhurt;
+					/* 对手攻击 */
+					var mehealth -= 16;
+				}else {
+					print("技能冷却中...");
+				}
+			}
+			elif skillchoice == '3' {
+				if cooling_3 == 0 {
+					/* 伤害计算 */
+					var hurt = hurt * skillhurt_3;
+					var himhealth -= hurt;
+					/* 变量值复原 */
+					if skin == "HouYi" {
+						var cooling_3 = 13;
+					}elif skin == "LiBai" {
+						var cooling_3 = 12;
+					}
+					var hurt = 12 * addhurt;
+					/* 对手攻击 */
+					var mehealth -= 16;
+				}else {
+					print("技能冷却中...");
+				}
+			}else {
+				print("选择错误！");
+			}
+			print("=================\n");
+		}
+		/* 结果判定 */
+		if mehealth < 0 and himhealth < 0 {
+			print("游戏结果: 平局！\n获得 5 金币！");
+			var coin += 5;
+			print("=================\n");
+		}elif mehealth < 0 {
+			print("游戏结果: 失败！\n获得 0 金币！");
+			print("=================\n");
+		}elif himhealth < 0 {
+			print("游戏结果: 胜利！\n获得 10 金币！");
+			var coin += 10;
+			print("=================\n");
+		}
+		/* 变量值复原 */
+		var cooling_1 = 0;     /* 技能冷却 */
+		var cooling_2 = 0;
+		var cooling_3 = 0;
+	}elif choice == "2" {
+		print("欢迎来到商店！\n您的金币是: "+str(coin));
+		print("商店皮肤:");
+		print("\t1. 李白        32金币");
+		print("\t2. 后羿        21金币");
+		print("\t3. 伤害加成20% 19金币" );
+		var shopchoice = input("请选择: ");
+		if shopchoice == "1" {
+			if coin <= 32 {
+			    var skin = "LiBai";
+				/* 李白 */
+				var skill = "1. 将进酒\n2. 神来之笔\n3. 青莲剑歌"; /* 技能文本 */
+				var skillhurt_1 = 2.1; /* 技能加值 */
+				var skillhurt_2 = 1.7;
+				var skillhurt_3 = 1.5;
+				var cooling_1 = 8;     /* 技能冷却 */
+				var cooling_2 = 6;
+				var cooling_3 = 12;
+			}else {
+				print("金币不足！");
+			}
+		}elif shopchoice == "2" {
+			if coin <= 21 {
+				/* 后羿 */
+				var skill = "1. 多重箭矢\n2. 落日余晖\n3. 灼日之矢"; /* 技能文本 */
+				var skillhurt_1 = 1.5; /* 技能加值 */
+				var skillhurt_2 = 1.9;
+				var skillhurt_3 = 2.4;
+				var cooling_1 = 6;     /* 技能冷却 */
+				var cooling_2 = 6;
+				var cooling_3 = 13;
+			}else {
+				print("金币不足！");
+			}
+		}elif shopchoice == "3" {
+			if coin <= 21 {
+				var addhurt = 1.2;
+				var hurt = hurt * addhurt;
+			}else {
+				print("金币不足！");
+			}
+		}else {
+				print("选择错误！");
+		}
+		print("=================\n");
+	}elif choice == "3" {
+		print("游戏结束");
+		break;
+	}else {
+	    print("选择错误！\n");
+	}
+}
